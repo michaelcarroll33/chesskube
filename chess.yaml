@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chess-deployment
+  labels:
+    app: chess
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chess
+  template:
+    metadata:
+      labels:
+        app: chess
+    spec:
+      containers:
+      - name: chess
+        image: mcarro33/chess:7.0.17-rc1-nanoserver-ltsc2022
+        ports:
+        - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chess-service
+spec:
+  selector:
+    app: chess
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
